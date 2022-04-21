@@ -2,6 +2,8 @@
 import java.awt.Color;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,6 +20,8 @@ import javax.swing.JOptionPane;
 public class Interfaz extends javax.swing.JFrame {
 
     ArrayList<JLabel> etiquetas = new ArrayList();
+    Stack<JLabel> cartasBuenas = new Stack<JLabel>();
+    JLabel[][] matrizCartas = new JLabel[4][4];
     SecureRandom revolver = new SecureRandom();
     String[] picCorto = new String[8];
     String[][] rutaCorto = new String[4][4];
@@ -25,9 +29,10 @@ public class Interfaz extends javax.swing.JFrame {
     int cantClics = 0;
     String[] Comparacion = new String[2];//cambiar para version socket
     int[] numeroCarta = new int[2];
-    int mis_aciertos=0;
-    int aciertos_rival=0;
-    int fallas=0;
+    int mis_aciertos = 0;
+    int aciertos_rival = 0;
+    int fallas = 0;
+    private boolean gameOver = false;
 
     public Interfaz() {
         initComponents();
@@ -55,6 +60,22 @@ public class Interfaz extends javax.swing.JFrame {
         etiquetas.add(jlbF15);
         etiquetas.add(jlbF16);
         etiquetas.add(jlbF17);
+        matrizCartas[0][0]= jlbF1;
+        matrizCartas[0][1]= jlbF2;
+        matrizCartas[0][2]= jlbF3;
+        matrizCartas[0][3]= jlbF4;
+        matrizCartas[1][0]= jlbF5;
+        matrizCartas[1][1]= jlbF6;
+        matrizCartas[1][2]= jlbF7;
+        matrizCartas[1][3]= jlbF8;
+        matrizCartas[2][0]= jlbF10;
+        matrizCartas[2][1]= jlbF11;
+        matrizCartas[2][2]= jlbF12;
+        matrizCartas[2][3]= jlbF13;
+        matrizCartas[3][0]= jlbF14;
+        matrizCartas[3][1]= jlbF15;
+        matrizCartas[3][2]= jlbF16;
+        matrizCartas[3][3]= jlbF17;
 
     }
 
@@ -134,16 +155,18 @@ public class Interfaz extends javax.swing.JFrame {
 
         }
     }
-    boolean jugarONo(){
+
+    boolean jugarONo() {
         boolean jugarAct;
-        if(btnJugar.getText().equals("Jugando")){
-            jugarAct=true;
-        }else{
-            jugarAct=false;
+        if (btnJugar.getText().equals("Jugando")) {
+            jugarAct = true;
+            finDeJuego();
+        } else {
+            jugarAct = false;
         }
-        
+
         return jugarAct;
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -411,10 +434,14 @@ public class Interfaz extends javax.swing.JFrame {
         if (rutaCorto[0][0] == null) {
             cargarImagenesCarta();
             btnJugar.setText("Jugar");
-            
+
         } else {
             voltearCartas();
             btnJugar.setText("Jugando");
+//            if (!connectToServer()) {
+//            initServer();
+//            }
+            //agregar que busque cliente servidor
         }
     }//GEN-LAST:event_btnJugarActionPerformed
 
@@ -426,121 +453,155 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jlbF4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF4MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF4.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF4.getText())) - 1);
     }//GEN-LAST:event_jlbF4MouseClicked
     }
     private void jlbF1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF1MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF1.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF1.getText())) - 1);
 
     }//GEN-LAST:event_jlbF1MouseClicked
     }
     private void jlbF2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF2MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF2.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF2.getText())) - 1);
     }//GEN-LAST:event_jlbF2MouseClicked
     }
     private void jlbF3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF3MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF3.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF3.getText())) - 1);
     }//GEN-LAST:event_jlbF3MouseClicked
     }
     private void jlbF5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF5MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF5.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF5.getText())) - 1);
     }//GEN-LAST:event_jlbF5MouseClicked
     }
     private void jlbF6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF6MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF6.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF6.getText())) - 1);
     }//GEN-LAST:event_jlbF6MouseClicked
     }
     private void jlbF7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF7MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF7.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF7.getText())) - 1);
     }//GEN-LAST:event_jlbF7MouseClicked
     }
     private void jlbF8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF8MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF8.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF8.getText())) - 1);
     }//GEN-LAST:event_jlbF8MouseClicked
     }
     private void jlbF12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF12MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF12.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF12.getText())) - 1);
     }//GEN-LAST:event_jlbF12MouseClicked
     }
     private void jlbF11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF11MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF11.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF11.getText())) - 1);
     }//GEN-LAST:event_jlbF11MouseClicked
     }
     private void jlbF10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF10MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF10.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF10.getText())) - 1);
     }//GEN-LAST:event_jlbF10MouseClicked
     }
     private void jlbF14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF14MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF14.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF14.getText())) - 1);
     }//GEN-LAST:event_jlbF14MouseClicked
     }
     private void jlbF13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF13MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF13.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF13.getText())) - 1);
     }//GEN-LAST:event_jlbF13MouseClicked
     }
     private void jlbF17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF17MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF17.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF17.getText())) - 1);
     }//GEN-LAST:event_jlbF17MouseClicked
     }
     private void jlbF16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF16MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF16.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF16.getText())) - 1);
     }//GEN-LAST:event_jlbF16MouseClicked
     }
     private void jlbF15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbF15MouseClicked
         // TODO add your handling code here:
-        if(jugarONo()){
-        mostrarImagen(Integer.parseInt((jlbF15.getText())) - 1);
+        if (jugarONo()) {
+            mostrarImagen(Integer.parseInt((jlbF15.getText())) - 1);
     }//GEN-LAST:event_jlbF15MouseClicked
+    }
+
+    private void finDeJuego() {
+        if ((mis_aciertos + aciertos_rival) != 8) {
+            gameOver = false;
+        } else {
+            gameOver = true;
+
+            if (mis_aciertos > aciertos_rival) {
+                JOptionPane.showMessageDialog(null, "Ganastes");
+            } else if (mis_aciertos == aciertos_rival) {
+                JOptionPane.showMessageDialog(null, "Empate");
+            } else {
+                JOptionPane.showMessageDialog(null, "Derrota");
+            }
+        }
     }
     private void btnCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompararActionPerformed
         // TODO add your handling code here:
         if (Comparacion[0].equals(Comparacion[1])) {
             etiquetas.get(numeroCarta[0]).setVisible(false);
             etiquetas.get(numeroCarta[1]).setVisible(false);
-            JOptionPane.showMessageDialog(null, "+1punto");//agregar nombre del jugador o servidor
+            JOptionPane.showMessageDialog(null, "+1punto");
             mis_aciertos++;
-            jlbCorrectos1.setText(""+mis_aciertos);
+            jlbCorrectos1.setText("" + mis_aciertos);
+            cartasBuenas.push(etiquetas.get(numeroCarta[0]));
+            cartasBuenas.push(etiquetas.get(numeroCarta[1]));
+            reordenar();
+            pnlCorto.revalidate();
+            //Collections.shuffle(rutaCorto[0]);
         } else {
             fallas++;
-            jlbFallas.setText(""+fallas);
+            jlbFallas.setText("" + fallas);
             voltearCartas();
             JOptionPane.showMessageDialog(null, "error siguiente jugador");
             //cambia de jugador
         }
         btnComparar.setEnabled(false);
         cantClics = 0;
-        //añadir el cambio de turno o no
-    }//GEN-LAST:event_btnCompararActionPerformed
 
+        //añadir el cambio de turno
+    }//GEN-LAST:event_btnCompararActionPerformed
+    private void reordenar(){
+        for(int i = 0; i<matrizCartas.length; i++){
+            for(int j = 0; j<matrizCartas[0].length; j++){
+                
+                    JLabel temp= matrizCartas[i][j];
+                    int fila= (int)Math.random()*4;
+                    int columna= (int)Math.random()*4;
+                    matrizCartas[i][j]= matrizCartas[fila][columna];
+                    matrizCartas[fila][columna]= temp;
+                
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */
