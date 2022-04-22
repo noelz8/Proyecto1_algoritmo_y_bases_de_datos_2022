@@ -1,10 +1,16 @@
 
 import java.awt.Color;
+//import java.io.DataInputStream;
+//import java.io.DataOutputStream;
+//import java.io.IOException;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.net.InetAddress;
+//import java.net.ServerSocket;
+//import java.net.Socket;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Stack;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,8 +24,9 @@ import javax.swing.JOptionPane;
  * @author Noel
  */
 //Constructir
-public class Interfaz extends javax.swing.JFrame {
+public final class Interfaz extends javax.swing.JFrame {
 
+    //Logica del juego y GUI
     ArrayList<JLabel> etiquetas = new ArrayList();
     Stack<JLabel> cartasBuenas = new Stack<JLabel>();
     JLabel[][] matrizCartas = new JLabel[4][4];
@@ -28,22 +35,122 @@ public class Interfaz extends javax.swing.JFrame {
     String[][] rutaCorto = new String[4][4];
     int[] nums = new int[8];
     int cantClics = 0;
-    String[] Comparacion = new String[2];//cambiar para version socket
+    String[] Comparacion = new String[2];//
     int[] numeroCarta = new int[2];
     int mis_aciertos = 0;
     int aciertos_rival = 0;
     int fallas = 0;
     private boolean gameOver = false;
     JLabel label = new JLabel();
+    private boolean miTurno = false;
+    //Network(Sockets)
+//    private final String ip = "localhost";
+//    private final int port = 22222;
+//    private final Thread thread;
+//
+//    private Socket socket;
+//    private ServerSocket serverSocket;
+//    private DataOutputStream outputTurn;
+//    private DataInputStream inputTurn;
+//    private ObjectOutputStream outputBoard;
+//    private ObjectInputStream inputBoard;
+//
+//    private boolean isServer = false;
+//    private boolean ClientConnected = false;
+//
+//    private final boolean lostConnection = false;
+//    private int numErrors = 0;
 
-    public Interfaz() {
+    public Interfaz(){
         initComponents();
         setSize(800, 700);
         setLocationRelativeTo(this);
         cargarEtiquetas();
         agregarImagenes();
         pnlCorto.setVisible(false);
+//         if (!connectToServer()) {
+//            fetchBoardStateFromServer();
+//         }
+//        if (!connectToServer()) {
+//            initComponents();
+//            setSize(800, 700);
+//            setLocationRelativeTo(this);
+//            cargarEtiquetas();
+//            agregarImagenes();
+//            pnlCorto.setVisible(false);
+//
+//        } else {
+//            fetchBoardStateFromServer();
+//        }
+        //pnlCorto.removeAll();
+//        pnlCorto.add(pnlCorto, BorderLayout.CENTER);
+//        pnlCorto.revalidate();
+//        pnlCorto.repaint();
+
     }
+
+//    private boolean connectToServer() {
+//        System.out.println("Connecting to server...");
+//        try {
+//            socket = new Socket(ip, port);
+//            outputTurn = new DataOutputStream(socket.getOutputStream());
+//            inputTurn = new DataInputStream(socket.getInputStream());
+//
+//            outputBoard = new ObjectOutputStream(socket.getOutputStream());
+//            inputBoard = new ObjectInputStream(socket.getInputStream());
+//
+//            ClientConnected = true;//revisar
+//            isServer = false;
+//            System.out.println("Successfulyy connected to server");
+//
+//        } catch (IOException e) {
+//            System.out.println("Unable to connect to server at adress" + ip + ":" + port);
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    private void listenForServerRequest() {
+//        Socket socket = null;
+//        try {
+//            //Bloquea el programa hasta recibir una solicitud
+//            socket = serverSocket.accept();
+//            outputTurn = new DataOutputStream(socket.getOutputStream());
+//            inputTurn = new DataInputStream(socket.getInputStream());
+//
+//            outputBoard = new ObjectOutputStream(socket.getOutputStream());
+//            inputBoard = new ObjectInputStream(socket.getInputStream());
+//
+//            ClientConnected = true;
+//            isServer = true;
+//            miTurno = true;
+//
+//            //ya que el cliente este conectado, se enviara el tablero inicial
+//            sendClientBoardState();
+//
+//            //Permite inciar al servidor iniciar turno
+//            //disableTiles(false);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void sendClientBoardState() {
+//        try {
+//            outputBoard.writeObject(pnlCorto);
+//            outputBoard.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            numErrors++;
+//        }
+//
+//    }
+//
+//    private void fetchBoardStateFromServer() {
+//
+//        pnlCorto.revalidate();
+//        pnlCorto.repaint();
+//    }
 
     void cargarEtiquetas() {
         etiquetas.add(jlbF1);
@@ -171,6 +278,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     }
 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -218,8 +326,13 @@ public class Interfaz extends javax.swing.JFrame {
         btnCorto.setBounds(50, 21, 72, 22);
 
         btnNormal.setText("Normal");
+        btnNormal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNormalActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnNormal);
-        btnNormal.setBounds(247, 21, 72, 22);
+        btnNormal.setBounds(180, 20, 72, 22);
 
         pnlCorto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlCorto.setLayout(null);
@@ -369,7 +482,7 @@ public class Interfaz extends javax.swing.JFrame {
         jlbF17.setBounds(204, 313, 80, 80);
 
         getContentPane().add(pnlCorto);
-        pnlCorto.setBounds(10, 50, 530, 420);
+        pnlCorto.setBounds(10, 50, 560, 440);
 
         btnJugar.setText("Jugar");
         btnJugar.addActionListener(new java.awt.event.ActionListener() {
@@ -415,7 +528,7 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(btnPoder1);
         btnPoder1.setBounds(40, 500, 72, 22);
 
-        btnPoder2.setText("Poder 2");
+        btnPoder2.setText("Reverse");
         btnPoder2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPoder2MouseClicked(evt);
@@ -424,9 +537,19 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(btnPoder2);
         btnPoder2.setBounds(140, 500, 72, 22);
 
-        btnPoder3.setText("Poder 3");
+        btnPoder3.setText("One more time");
+        btnPoder3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPoder3MouseClicked(evt);
+            }
+        });
+        btnPoder3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPoder3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnPoder3);
-        btnPoder3.setBounds(250, 500, 72, 22);
+        btnPoder3.setBounds(250, 500, 140, 22);
 
         jlbF9.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         getContentPane().add(jlbF9);
@@ -456,10 +579,23 @@ public class Interfaz extends javax.swing.JFrame {
         if (rutaCorto[0][0] == null) {
             cargarImagenesCarta();
             btnJugar.setText("Jugar");
+            
 
         } else {
             voltearCartas();
             btnJugar.setText("Jugando");
+            btnComparar.setEnabled(true);
+//            System.out.println("Iniciando server");
+//            try {
+//                serverSocket = new ServerSocket(port, 8, InetAddress.getByName(ip));
+//
+//                miTurno = true;
+//                isServer = true;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            //miTurno = true;
+
 //            if (!connectToServer()) {
 //            initServer();
 //            }
@@ -591,9 +727,18 @@ public class Interfaz extends javax.swing.JFrame {
         if (Comparacion[0].equals(Comparacion[1])) {
             etiquetas.get(numeroCarta[0]).setVisible(false);
             etiquetas.get(numeroCarta[1]).setVisible(false);
-            JOptionPane.showMessageDialog(null, "+1punto");
-            mis_aciertos++;
-            jlbCorrectos1.setText("" + mis_aciertos);
+            
+            if (miTurno) {
+                mis_aciertos++;
+                jlbCorrectos1.setText("" + mis_aciertos);
+                JOptionPane.showMessageDialog(null, "+1punto");
+            } else {
+                aciertos_rival++;
+                jlbRival.setText("" + aciertos_rival);
+                JOptionPane.showMessageDialog(null, "Rival +1punto");
+
+            }
+
             //cartasBuenas.push(etiquetas.get(numeroCarta[0]));
             //cartasBuenas.push(etiquetas.get(numeroCarta[1]));
             reordenar();
@@ -602,6 +747,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         } else {
             fallas++;
+            miTurno = !miTurno;
             jlbFallas.setText("" + fallas);
             voltearCartas();
             JOptionPane.showMessageDialog(null, "error siguiente jugador");
@@ -615,6 +761,16 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btnLargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLargoActionPerformed
         // TODO add your handling code here:
+//        Largo p3 = new Largo();
+//        p3.setSize(800, 700);
+//        p3.setLocation(0, 0);
+//        cargarEtiquetas();
+//        agregarImagenes();
+//        
+//        pnlCorto.removeAll();
+//        pnlCorto.add(p3, BorderLayout.CENTER);
+//        pnlCorto.revalidate();
+//        pnlCorto.repaint();
     }//GEN-LAST:event_btnLargoActionPerformed
 
     private void btnPoder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPoder1ActionPerformed
@@ -633,22 +789,51 @@ public class Interfaz extends javax.swing.JFrame {
         aciertos_rival = temp;
         jlbCorrectos1.setText("" + mis_aciertos);
         jlbRival.setText("" + aciertos_rival);
+        btnPoder2.setEnabled(false);
+            
+        
 
 
     }//GEN-LAST:event_btnPoder2MouseClicked
+
+    private void btnNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNormalActionPerformed
+        // TODO add your handling code here:
+//        Normal p2 = new Normal();
+//        p2.setSize(800, 700);
+//        p2.setLocation(0, 0);
+////        cargarEtiquetas();
+////        agregarImagenes();
+//        
+//        pnlCorto.removeAll();
+//        pnlCorto.add(p2, BorderLayout.CENTER);
+//        pnlCorto.revalidate();
+//        pnlCorto.repaint();
+    }//GEN-LAST:event_btnNormalActionPerformed
+
+    private void btnPoder3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPoder3MouseClicked
+        // TODO add your handling code here:
+        
+        btnPoder2.setEnabled(true);
+        btnPoder3.setEnabled(false);
+        
+    }//GEN-LAST:event_btnPoder3MouseClicked
+
+    private void btnPoder3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPoder3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPoder3ActionPerformed
 //    private void actualizar(){
 //        Collections.shuffle(etiquetas);
 //        label.setIcon((Icon) etiquetas.get(0));
 
 //    }
     private void reordenar() {
-        for (int i = 0; i < matrizCartas.length; i++) {
+        for (int a = 0; a < matrizCartas.length; a++) {
             for (int j = 0; j < matrizCartas[0].length; j++) {
 
-                JLabel temp = matrizCartas[i][j];
+                JLabel temp = matrizCartas[a][j];
                 int fila = (int) (Math.random() * 4);
                 int columna = (int) (Math.random() * 4);
-                matrizCartas[i][j] = matrizCartas[fila][columna];
+                matrizCartas[a][j] = matrizCartas[fila][columna];
                 matrizCartas[fila][columna] = temp;
 
             }
