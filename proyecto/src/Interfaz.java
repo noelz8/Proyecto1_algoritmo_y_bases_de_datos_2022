@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,6 +34,7 @@ public class Interfaz extends javax.swing.JFrame {
     int aciertos_rival = 0;
     int fallas = 0;
     private boolean gameOver = false;
+    JLabel label = new JLabel();
 
     public Interfaz() {
         initComponents();
@@ -60,22 +62,22 @@ public class Interfaz extends javax.swing.JFrame {
         etiquetas.add(jlbF15);
         etiquetas.add(jlbF16);
         etiquetas.add(jlbF17);
-        matrizCartas[0][0]= jlbF1;
-        matrizCartas[0][1]= jlbF2;
-        matrizCartas[0][2]= jlbF3;
-        matrizCartas[0][3]= jlbF4;
-        matrizCartas[1][0]= jlbF5;
-        matrizCartas[1][1]= jlbF6;
-        matrizCartas[1][2]= jlbF7;
-        matrizCartas[1][3]= jlbF8;
-        matrizCartas[2][0]= jlbF10;
-        matrizCartas[2][1]= jlbF11;
-        matrizCartas[2][2]= jlbF12;
-        matrizCartas[2][3]= jlbF13;
-        matrizCartas[3][0]= jlbF14;
-        matrizCartas[3][1]= jlbF15;
-        matrizCartas[3][2]= jlbF16;
-        matrizCartas[3][3]= jlbF17;
+        matrizCartas[0][0] = jlbF1;
+        matrizCartas[0][1] = jlbF2;
+        matrizCartas[0][2] = jlbF3;
+        matrizCartas[0][3] = jlbF4;
+        matrizCartas[1][0] = jlbF5;
+        matrizCartas[1][1] = jlbF6;
+        matrizCartas[1][2] = jlbF7;
+        matrizCartas[1][3] = jlbF8;
+        matrizCartas[2][0] = jlbF10;
+        matrizCartas[2][1] = jlbF11;
+        matrizCartas[2][2] = jlbF12;
+        matrizCartas[2][3] = jlbF13;
+        matrizCartas[3][0] = jlbF14;
+        matrizCartas[3][1] = jlbF15;
+        matrizCartas[3][2] = jlbF16;
+        matrizCartas[3][3] = jlbF17;
 
     }
 
@@ -399,11 +401,26 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(jlbRival);
         jlbRival.setBounds(580, 270, 120, 100);
 
-        btnPoder1.setText("Poder 1");
+        btnPoder1.setText("NUKE");
+        btnPoder1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPoder1MouseClicked(evt);
+            }
+        });
+        btnPoder1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPoder1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnPoder1);
         btnPoder1.setBounds(40, 500, 72, 22);
 
         btnPoder2.setText("Poder 2");
+        btnPoder2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPoder2MouseClicked(evt);
+            }
+        });
         getContentPane().add(btnPoder2);
         btnPoder2.setBounds(140, 500, 72, 22);
 
@@ -416,8 +433,13 @@ public class Interfaz extends javax.swing.JFrame {
         jlbF9.setBounds(0, 0, 4, 4);
 
         btnLargo.setText("largo");
+        btnLargo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLargoActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnLargo);
-        btnLargo.setBounds(410, 20, 72, 22);
+        btnLargo.setBounds(360, 20, 72, 22);
 
         jlbCorrectos1.setFont(new java.awt.Font("Impact", 0, 14)); // NOI18N
         jlbCorrectos1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -572,11 +594,12 @@ public class Interfaz extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "+1punto");
             mis_aciertos++;
             jlbCorrectos1.setText("" + mis_aciertos);
-            cartasBuenas.push(etiquetas.get(numeroCarta[0]));
-            cartasBuenas.push(etiquetas.get(numeroCarta[1]));
+            //cartasBuenas.push(etiquetas.get(numeroCarta[0]));
+            //cartasBuenas.push(etiquetas.get(numeroCarta[1]));
             reordenar();
+            finDeJuego();
             pnlCorto.revalidate();
-            //Collections.shuffle(rutaCorto[0]);
+
         } else {
             fallas++;
             jlbFallas.setText("" + fallas);
@@ -589,19 +612,49 @@ public class Interfaz extends javax.swing.JFrame {
 
         //añadir el cambio de turno
     }//GEN-LAST:event_btnCompararActionPerformed
-    private void reordenar(){
-        for(int i = 0; i<matrizCartas.length; i++){
-            for(int j = 0; j<matrizCartas[0].length; j++){
-                
-                    JLabel temp= matrizCartas[i][j];
-                    int fila= (int)Math.random()*4;
-                    int columna= (int)Math.random()*4;
-                    matrizCartas[i][j]= matrizCartas[fila][columna];
-                    matrizCartas[fila][columna]= temp;
-                
+
+    private void btnLargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLargoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLargoActionPerformed
+
+    private void btnPoder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPoder1ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnPoder1ActionPerformed
+
+    private void btnPoder1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPoder1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPoder1MouseClicked
+
+    private void btnPoder2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPoder2MouseClicked
+        // TODO add your handling code here:
+        int temp = mis_aciertos;
+        mis_aciertos = aciertos_rival;
+        aciertos_rival = temp;
+        jlbCorrectos1.setText("" + mis_aciertos);
+        jlbRival.setText("" + aciertos_rival);
+
+
+    }//GEN-LAST:event_btnPoder2MouseClicked
+//    private void actualizar(){
+//        Collections.shuffle(etiquetas);
+//        label.setIcon((Icon) etiquetas.get(0));
+
+//    }
+    private void reordenar() {
+        for (int i = 0; i < matrizCartas.length; i++) {
+            for (int j = 0; j < matrizCartas[0].length; j++) {
+
+                JLabel temp = matrizCartas[i][j];
+                int fila = (int) (Math.random() * 4);
+                int columna = (int) (Math.random() * 4);
+                matrizCartas[i][j] = matrizCartas[fila][columna];
+                matrizCartas[fila][columna] = temp;
+
             }
         }
     }
+
     /**
      * @param args the command line arguments
      */
